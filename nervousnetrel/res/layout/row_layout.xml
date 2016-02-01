@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/transparent_background"
+    android:orientation="horizontal" >
+    
+    <TextView 
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/time_list_tv"
+        android:textColor="@color/darkest_black"
+        android:textAlignment="center"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+    />
+    
+    <TextView 
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/entropy_list_tv"
+        android:textColor="@color/darkest_black"
+        android:textAlignment="center"
+        android:paddingStart="3dp"
+        android:paddingEnd="5dp"
+    />
+    
+    <TextView 
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/frequency_list_tv"
+        android:textColor="@color/darkest_black"
+        android:textAlignment="center"
+        android:paddingStart="3dp"
+        android:paddingEnd="5dp"
+    />
+    <TextView 
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/log_list_tv"
+        android:textColor="@color/darkest_black"
+        android:textAlignment="center"
+        android:paddingStart="3dp"
+        android:paddingEnd="5dp"
+    />
+    
+    <TextView 
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/share_list_tv"
+        android:textColor="@color/darkest_black"
+        android:textAlignment="center"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+    />
+    
+    
+
+</LinearLayout>

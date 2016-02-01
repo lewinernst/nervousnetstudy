@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="true" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="/Users/Lewin/git/nervous study"/>
+			<item value="/Users/Lewin/Downloads/nervousnetrel2"/>
+			<item value="/Users/Lewin/Downloads/nervousnet-android-master/vm"/>
+			<item value="/Users/Lewin/Downloads/nervousnet-android-master"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="CleanDialogSettings">
+		<item value="484" key="DIALOG_WIDTH"/>
+		<item value="375" key="DIALOG_Y_ORIGIN"/>
+		<item value="354" key="DIALOG_HEIGHT"/>
+		<item value="720" key="DIALOG_X_ORIGIN"/>
+		<item value="true" key="TOGGLE_SELECTED"/>
+	</section>
+</section>

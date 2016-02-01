@@ -1,0 +1,160 @@
+package ch.ethz.soms.nervous.android.sensors;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ch.ethz.soms.nervous.nervousproto.SensorUploadProtos.SensorUpload.SensorData;
+import ch.ethz.soms.nervous.android.sensorQueries.SensorQueriesAccelerometer;
+import ch.ethz.soms.nervous.android.sensorQueries.SensorQueriesBattery;
+import ch.ethz.soms.nervous.android.sensorQueries.SensorQueriesLight;
+import ch.ethz.soms.nervous.android.sensorQueries.SensorQueriesProximity;
+import ch.ethz.soms.nervous.android.sensors.SensorDescAccelerometer;
+import ch.ethz.soms.nervous.android.sensors.SensorDescAccelerometerNew;
+import ch.ethz.soms.nervous.android.sensors.SensorDescBattery;
+import ch.ethz.soms.nervous.android.sensors.SensorDescLight;
+import ch.ethz.soms.nervous.android.sensors.SensorDescProximity;
+import ch.ethz.soms.nervous.android.Queries.*;
+
+
+public class SensorDescInformation extends SensorDescVectorValue {
+	
+	public static final long SENSOR_ID = 0x000000000000000fL;
+	private float entropyAccuracy = 1000;
+	private final float entropy;
+	private final long earliest;
+	private final long latest;
+	private final long targetSENSOR_ID;
+	private final boolean isLogging;
+	private final boolean isSharing;
+
+	public SensorDescInformation(final long timestamp, final float entropy,
+			final long earliest, final long latest, final long targetSENSOR_ID, 
+			final boolean isLogging, final boolean isSharing) {
+		super(timestamp);
+		this.entropy = entropy;
+		this.earliest = earliest;
+		this.latest = latest;
+		this.targetSENSOR_ID = targetSENSOR_ID;
+		this.isLogging = isLogging;
+		this.isSharing = isSharing;
+	}
+	
+	public SensorDescInformation(SensorData sensorData) {
+		super(sensorData);
+		this.entropy = sensorData.getValueFloat(1);
+		this.earliest = (long) sensorData.getValueDouble(0);
+		this.latest = (long) sensorData.getValueDouble(1);
+		this.targetSENSOR_ID = (long) sensorData.getValueDouble(2);
+		this.isLogging = sensorData.getValueBool(0);
+		this.isSharing = sensorData.getValueBool(1);
+	}
+
+	public float getEntropy() {
+		return entropy;
+	}
+
+	public long getEarliest() {
+		return earliest;
+	}
+	
+	public long getLatest() {
+		return latest;
+	}
+	
+	public long getTargetSENSOR_ID() {
+		return targetSENSOR_ID;
+	}
+	public boolean getLogging(){
+		return isLogging;
+	}
+	public boolean getSharing(){
+		return isSharing;
+	}
+
+
+	@Override
+	public long getSensorId() {
+		return SENSOR_ID;
+	}
+
+	@Override
+	public SensorData toProtoSensor() {
+		//BEGINNING
+			
+//	        var b = AccelerometerQuery(from: UInt64(earliest), to: UInt64.max) //get all values of battery stored.
+//	        println("get count of list")
+//	        var c : Float = Float(b.getCount())
+//	        println("get maximum value")
+//	        var m = b.getMaxValue()
+//	        var data = b.List
+//	        var avg : Float = 0
+//	        var ent : Float = 0.0
+//	        for i in data {
+//	            avg+=i.valueFloat[0]
+//	        }
+//	        avg /= c
+//	        
+//	        var temp: [Float] = []
+//	        var count : [Int] = [Int](count:entropyAccuracy, repeatedValue: 0)
+//	        var no: Int = 0
+//	        for i in data {
+//	            temp.append((i.valueFloat[0]-avg)*(i.valueFloat[0]-avg))
+//	            var jo = Int(abs(i.valueFloat[0]*Float(entropyAccuracy)/4))
+//	            count[jo]++
+//	            no++
+//	        }
+//	        for p in 1...entropyAccuracy-1 {
+//	            ent += (Float(count[p])/Float(no))*log((Float(count[p])/Float(no)))
+//	        }
+//	        
+//	        var stddev = temp[temp.count/2]
+//	        self.entropy = ent
+//	        
+//	        self.isLogging = VM.getLogSwitch(0)
+//	        self.isSharing = VM.getShareSwitch(0)
+//
+//
+//	        builder.valueFloat = [/*self.targetSensor,*/ self.earliest, self.latest, self.entropy, self.entropyMax, self.entropyMin]
+//	        builder.valueBool = [self.isLogging, self.isSharing]
+//	        
+//	        
+//	        return builder.build()
+		//END
+		
+		SensorQueriesAccelerometer accQuery = new SensorQueriesAccelerometer(earliest, latest, null);
+		int count = accQuery.getCount();
+		List<SensorData> data = accQuery.list;
+		int [] counter = new int [count];
+		
+		for (SensorData temp : data) {
+			
+			
+		}
+		
+		
+		
+		SensorData.Builder sdb = SensorData.newBuilder();
+		sdb.setRecordTime(getTimestamp());
+		sdb.addValueFloat((getEntropy()));
+		sdb.addValueDouble(getEarliest());
+		sdb.addValueDouble(getLatest());
+		sdb.addValueDouble(getTargetSENSOR_ID());
+		sdb.addValueBool(getLogging());
+		sdb.addValueBool(getSharing());
+		return sdb.build();
+	}
+
+	@Override
+	public ArrayList<Float> getValue() {
+		// TODO Auto-generated method stub
+		ArrayList<Float> arrayList = new ArrayList<Float>();
+//		arrayList.add(gyrX);
+//		arrayList.add(gyrY);
+//		arrayList.add(gyrZ);
+		return arrayList;
+	}
+
+}
+
+
+

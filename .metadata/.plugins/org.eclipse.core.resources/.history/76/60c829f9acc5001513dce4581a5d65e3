@@ -1,0 +1,6 @@
+package com.example.lewin;
+
+public enum TimeType {
+	START_TIME,
+	END_TIME
+}

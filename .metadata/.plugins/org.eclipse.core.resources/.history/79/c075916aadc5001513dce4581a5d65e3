@@ -1,0 +1,9 @@
+package com.example.lewin.graphics;
+
+public enum ListType {
+	TIME,
+	ENTROPY,
+	FREQUENCY,
+	LOG,
+	SHARE
+}
