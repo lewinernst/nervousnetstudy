@@ -28,7 +28,7 @@ public class InformationSensor {
 
 
 	public interface InformationListener {
-		public void informationSensorDataReady( long timestamp,  float entropyX,  float entropyY,  float entropyZ, float frequency,
+		public void informationSensorDataReady( long timestamp,  float entropyX,  float entropyY,  float entropyZ, float frequency, float changeRateX, float changeRateY, float changeRateZ,
 				 boolean isLogging,  boolean isSharing);
 	}
 
@@ -50,11 +50,11 @@ public class InformationSensor {
 		listenerMutex.unlock();
 	}
 
-	public void dataReady( long timestamp,  float entropyX,  float entropyY,  float entropyZ,  float  frequency,
+	public void dataReady( long timestamp,  float entropyX,  float entropyY,  float entropyZ,  float  frequency, float changeRateX, float changeRateY, float changeRateZ,
 			 boolean isLogging,  boolean isSharing) {
 		listenerMutex.lock();
 		for (InformationListener listener : listenerList) {
-			listener.informationSensorDataReady(timestamp, entropyX, entropyY, entropyZ, frequency,
+			listener.informationSensorDataReady(timestamp, entropyX, entropyY, entropyZ, frequency, changeRateX, changeRateY, changeRateZ,
 					isLogging, isSharing);
 		}
 		listenerMutex.unlock();
@@ -95,6 +95,17 @@ public class InformationSensor {
 				entroZ += (counter[i][2]/count)*Math.log10(counter[i][2]/count);
 			}
 			
+			float changeRateX = 0, changeRateY = 0, changeRateZ = 0;
+		
+			for (int i = 0; i< data.size(); i++){
+				changeRateX += (data.get(i+1).getValueFloat(0) - data.get(i).getValueFloat(0))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
+				changeRateY += (data.get(i+1).getValueFloat(1) - data.get(i).getValueFloat(1))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
+				changeRateZ += (data.get(i+1).getValueFloat(2) - data.get(i).getValueFloat(2))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
+			}
+			changeRateX /= data.size();
+			changeRateY /= data.size();
+			changeRateZ /= data.size();
+			
 			
 			
 			final SharedPreferences settings = context.getSharedPreferences(NervousStatics.SENSOR_PREFS, 0);
@@ -104,7 +115,7 @@ public class InformationSensor {
 			boolean isSh = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doShare", true);
 			
 			
-			dataReady(System.currentTimeMillis(), entroX, entroY, entroZ, freq, isLo, isSh);
+			dataReady(System.currentTimeMillis(), entroX, entroY, entroZ, freq, changeRateX, changeRateY, changeRateZ, isLo, isSh);
 			return null;
 		}
 

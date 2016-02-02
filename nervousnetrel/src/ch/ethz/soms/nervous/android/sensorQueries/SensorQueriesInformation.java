@@ -29,7 +29,7 @@ public class SensorQueriesInformation extends QueryNumVectorValue<SensorDescInfo
 	@Override
 	public SensorDescInformation createDummyObject() {
 		// TODO Auto-generated method stub
-		return new SensorDescInformation(0, 0, 0, 0, false, false);
+		return new SensorDescInformation(0, 0, 0, 0, 0, 0, 0, 0, false, false);
 	}
 	
 

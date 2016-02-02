@@ -394,9 +394,9 @@ public class SensorService extends Service implements SensorEventListener, Noise
 	
 	@Override
 	public void informationSensorDataReady( long timestamp,  float entropyX,  float entropyY, float entropyZ,
-			 float frequency, boolean isLogging,  boolean isSharing) {
+			 float frequency, float changeRateX, float changeRateY, float changeRateZ, boolean isLogging,  boolean isSharing) {
 		ArrayList<SensorDesc> sensorDescs = new ArrayList<SensorDesc>();
-		SensorDesc sensorDesc = new SensorDescInformation(timestamp, entropyX, entropyY, entropyZ, frequency, isLogging, isSharing);
+		SensorDesc sensorDesc = new SensorDescInformation(timestamp, entropyX, entropyY, entropyZ, frequency, changeRateX, changeRateY, changeRateZ, isLogging, isSharing);
 		Log.d(LOG_TAG, "Information data collected");
 		sensorDescs.add(sensorDesc);
 		store(sensorDesc.getSensorId(), sensorDescs);

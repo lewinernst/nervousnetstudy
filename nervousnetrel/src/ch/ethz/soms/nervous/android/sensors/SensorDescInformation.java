@@ -20,18 +20,28 @@ public class SensorDescInformation extends SensorDescVectorValue {
 	private float entropyX;
 	private float entropyY;
 	private float entropyZ;
+	
 	private float frequency;
+	
+	private float changeRateX;
+	private float changeRateY;
+	private float changeRateZ;
+	
 	private final boolean isLogging;
 	private final boolean isSharing;
 
 	public SensorDescInformation(final long timestamp, final float entropyX, final float entropyY, final float entropyZ, 
-			final float frequency, final boolean isLogging, final boolean isSharing) {
+			final float frequency, final float changeRateX, final float changeRateY, final float changeRateZ, final boolean isLogging, final boolean isSharing) {
 		super(timestamp);
 		this.entropyX = entropyX;
 		this.entropyY = entropyY;
 		this.entropyZ = entropyZ;
 		
 		this.frequency = frequency;
+		
+		this.changeRateX = changeRateX;
+		this.changeRateY = changeRateY;
+		this.changeRateZ = changeRateZ;
 		
 		this.isLogging = isLogging;
 		this.isSharing = isSharing;
@@ -42,7 +52,12 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		this.entropyX = sensorData.getValueFloat(1);
 		this.entropyY = sensorData.getValueFloat(2);
 		this.entropyZ = sensorData.getValueFloat(3);
+		
 		this.frequency = sensorData.getValueFloat(4);
+		
+		this.changeRateX = sensorData.getValueFloat(5);
+		this.changeRateY = sensorData.getValueFloat(6);
+		this.changeRateZ = sensorData.getValueFloat(7);
 		
 		this.isLogging = sensorData.getValueBool(0);
 		this.isSharing = sensorData.getValueBool(1);
@@ -64,6 +79,16 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		return frequency;
 	}
 	
+	public float getChangeRateX(){
+		return changeRateX;
+	}
+	public float getChangeRateY(){
+		return changeRateY;
+	}
+	public float getChangeRateZ(){
+		return changeRateZ;
+	}
+	
 	public boolean getIsLogging(){
 		return isLogging;
 	}
@@ -82,7 +107,13 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		sdb.addValueFloat(getEntropyX());
 		sdb.addValueFloat(getEntropyY());
 		sdb.addValueFloat(getEntropyZ());
+		
 		sdb.addValueFloat(getFrequency());
+		
+		sdb.addValueFloat(getChangeRateX());
+		sdb.addValueFloat(getChangeRateY());
+		sdb.addValueFloat(getChangeRateZ());
+		
 		sdb.addValueBool(getIsLogging());
 		sdb.addValueBool(getIsSharing());
 		return sdb.build();
@@ -97,11 +128,18 @@ public class SensorDescInformation extends SensorDescVectorValue {
 	public ArrayList<Float> getValue() {
 		// TODO Auto-generated method stub
 		ArrayList<Float> arrayList = new ArrayList<Float>();
+		
 		arrayList.add(entropyX);
 		arrayList.add(entropyY);
 		arrayList.add(entropyZ);
+		
 		arrayList.add(frequency);
-		return arrayList; // 4 values returned
+		
+		arrayList.add(changeRateX);
+		arrayList.add(changeRateY);
+		arrayList.add(changeRateZ);
+
+		return arrayList; // 7 values returned
 	}
 
 }
