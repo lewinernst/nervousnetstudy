@@ -100,8 +100,7 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		arrayList.add(entropyX);
 		arrayList.add(entropyY);
 		arrayList.add(entropyZ);
-		arrayList.add(frequency);
-		return arrayList; // 4 values returned
+		return arrayList; // 3 values returned
 	}
 
 }

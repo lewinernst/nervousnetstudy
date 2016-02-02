@@ -25,13 +25,12 @@ public class SensorDescInformation extends SensorDescVectorValue {
 	private final boolean isSharing;
 
 	public SensorDescInformation(final long timestamp, final float entropyX, final float entropyY, final float entropyZ, 
-			final float frequency, final boolean isLogging, final boolean isSharing) {
+			final boolean isLogging, final boolean isSharing) {
 		super(timestamp);
 		this.entropyX = entropyX;
 		this.entropyY = entropyY;
 		this.entropyZ = entropyZ;
 		
-		this.frequency = frequency;
 		
 		this.isLogging = isLogging;
 		this.isSharing = isSharing;
@@ -42,7 +41,6 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		this.entropyX = sensorData.getValueFloat(1);
 		this.entropyY = sensorData.getValueFloat(2);
 		this.entropyZ = sensorData.getValueFloat(3);
-		this.frequency = sensorData.getValueFloat(4);
 		
 		this.isLogging = sensorData.getValueBool(0);
 		this.isSharing = sensorData.getValueBool(1);
@@ -58,10 +56,6 @@ public class SensorDescInformation extends SensorDescVectorValue {
 	
 	public float getEntropyZ(){
 		return entropyZ;
-	}
-	
-	public float getFrequency(){
-		return frequency;
 	}
 	
 	public boolean getIsLogging(){
@@ -82,7 +76,6 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		sdb.addValueFloat(getEntropyX());
 		sdb.addValueFloat(getEntropyY());
 		sdb.addValueFloat(getEntropyZ());
-		sdb.addValueFloat(getFrequency());
 		sdb.addValueBool(getIsLogging());
 		sdb.addValueBool(getIsSharing());
 		return sdb.build();
@@ -100,8 +93,7 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		arrayList.add(entropyX);
 		arrayList.add(entropyY);
 		arrayList.add(entropyZ);
-		arrayList.add(frequency);
-		return arrayList; // 4 values returned
+		return arrayList; // 3 values returned
 	}
 
 }

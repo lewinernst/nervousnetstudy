@@ -163,7 +163,7 @@ public class SensorService extends Service implements SensorEventListener, Noise
 		scheduleSensor(SensorDescConnectivity.SENSOR_ID);
 		scheduleSensor(SensorDescBattery.SENSOR_ID);
 		scheduleSensor(SensorDescInformation.SENSOR_ID);
-		
+
 		Log.d(LOG_TAG, "Service execution started");
 		return START_STICKY;
 	}
@@ -394,9 +394,9 @@ public class SensorService extends Service implements SensorEventListener, Noise
 	
 	@Override
 	public void informationSensorDataReady( long timestamp,  float entropyX,  float entropyY, float entropyZ,
-			 float frequency, boolean isLogging,  boolean isSharing) {
+			 boolean isLogging,  boolean isSharing) {
 		ArrayList<SensorDesc> sensorDescs = new ArrayList<SensorDesc>();
-		SensorDesc sensorDesc = new SensorDescInformation(timestamp, entropyX, entropyY, entropyZ, frequency, isLogging, isSharing);
+		SensorDesc sensorDesc = new SensorDescInformation(timestamp, entropyX, entropyY, entropyZ, isLogging, isSharing);
 		Log.d(LOG_TAG, "Information data collected");
 		sensorDescs.add(sensorDesc);
 		store(sensorDesc.getSensorId(), sensorDescs);

@@ -1,5 +1,6 @@
 package ch.ethz.soms.nervous.android.sensors;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -17,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 public class InformationSensor {
+	public File file;
 	private Context context;
 
 	public InformationSensor(Context context) {
@@ -28,8 +30,8 @@ public class InformationSensor {
 
 
 	public interface InformationListener {
-		public void informationSensorDataReady( long timestamp,  float entropyX,  float entropyY,  float entropyZ, float frequency,
-				 boolean isLogging,  boolean isSharing);
+		public void informationSensorDataReady(final long timestamp, final float entropyX, final float entropyY, final float entropyZ,
+				final boolean isLogging, final boolean isSharing);
 	}
 
 	public void addListener(InformationListener listener) {
@@ -50,11 +52,11 @@ public class InformationSensor {
 		listenerMutex.unlock();
 	}
 
-	public void dataReady( long timestamp,  float entropyX,  float entropyY,  float entropyZ,  float  frequency,
-			 boolean isLogging,  boolean isSharing) {
+	public void dataReady(final long timestamp, final float entropyX, final float entropyY, final float entropyZ, 
+			final boolean isLogging, final boolean isSharing) {
 		listenerMutex.lock();
 		for (InformationListener listener : listenerList) {
-			listener.informationSensorDataReady(timestamp, entropyX, entropyY, entropyZ, frequency,
+			listener.informationSensorDataReady(timestamp, entropyX, entropyY, entropyZ,
 					isLogging, isSharing);
 		}
 		listenerMutex.unlock();
@@ -98,13 +100,11 @@ public class InformationSensor {
 			
 			
 			final SharedPreferences settings = context.getSharedPreferences(NervousStatics.SENSOR_PREFS, 0);
-			
-			float freq = (int)context.getSharedPreferences(NervousStatics.SENSOR_FREQ, 0).getInt(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_freqValue", 30) * 1000;
 			boolean isLo = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doMeasure", true);
 			boolean isSh = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doShare", true);
+
 			
-			
-			dataReady(System.currentTimeMillis(), entroX, entroY, entroZ, freq, isLo, isSh);
+			dataReady(System.currentTimeMillis(), entroX, entroY, entroZ, isLo, isSh);
 			return null;
 		}
 

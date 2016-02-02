@@ -28,8 +28,8 @@ public class InformationSensor {
 
 
 	public interface InformationListener {
-		public void informationSensorDataReady( long timestamp,  float entropyX,  float entropyY,  float entropyZ, float frequency,
-				 boolean isLogging,  boolean isSharing);
+		public void informationSensorDataReady(final long timestamp, final float entropyX, final float entropyY, final float entropyZ,
+				final boolean isLogging, final boolean isSharing);
 	}
 
 	public void addListener(InformationListener listener) {
@@ -54,7 +54,7 @@ public class InformationSensor {
 			 boolean isLogging,  boolean isSharing) {
 		listenerMutex.lock();
 		for (InformationListener listener : listenerList) {
-			listener.informationSensorDataReady(timestamp, entropyX, entropyY, entropyZ, frequency,
+			listener.informationSensorDataReady(timestamp, entropyX, entropyY, entropyZ,
 					isLogging, isSharing);
 		}
 		listenerMutex.unlock();

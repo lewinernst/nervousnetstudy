@@ -60,10 +60,6 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		return entropyZ;
 	}
 	
-	public float getFrequency(){
-		return frequency;
-	}
-	
 	public boolean getIsLogging(){
 		return isLogging;
 	}
@@ -82,7 +78,6 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		sdb.addValueFloat(getEntropyX());
 		sdb.addValueFloat(getEntropyY());
 		sdb.addValueFloat(getEntropyZ());
-		sdb.addValueFloat(getFrequency());
 		sdb.addValueBool(getIsLogging());
 		sdb.addValueBool(getIsSharing());
 		return sdb.build();
@@ -100,8 +95,7 @@ public class SensorDescInformation extends SensorDescVectorValue {
 		arrayList.add(entropyX);
 		arrayList.add(entropyY);
 		arrayList.add(entropyZ);
-		arrayList.add(frequency);
-		return arrayList; // 4 values returned
+		return arrayList; // 3 values returned
 	}
 
 }
