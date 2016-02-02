@@ -74,52 +74,65 @@ public class InformationSensor {
 			int entropyAccuracy = SensorDescInformation.entropyAccuracy;
 			SensorQueriesAccelerometer accQuery = new SensorQueriesAccelerometer(SensorDescInformation.earliest, SensorDescInformation.latest, context.getFilesDir());
 			int count = accQuery.getCount();
-			float min = accQuery.getMinValue().getAccX();
-			float max = accQuery.getMaxValue().getAccX();
-			float interval = max-min;
-			List<SensorData> data = accQuery.list;
-			int [][] counter = new int [entropyAccuracy][3];
-			for (SensorData temp : data) {
-					
-					int joX = (int) ((temp.getValueFloat(0)-min)*entropyAccuracy/interval);
-					int joY = (int) ((temp.getValueFloat(1)-min)*entropyAccuracy/interval);
-					int joZ = (int) ((temp.getValueFloat(2)-min)*entropyAccuracy/interval);
-					counter [joX][0]++;
-					counter [joY][1]++;
-					counter [joZ][2]++;
+			if (accQuery.containsReadings()){
+				float min = accQuery.getMinValue().getAccX();
+				float max = accQuery.getMaxValue().getAccX();
+				float interval = max-min;
+				List<SensorData> data = accQuery.list;
+				int [][] counter = new int [entropyAccuracy][3];
+				for (SensorData temp : data) {
+						
+						int joX = (int) ((temp.getValueFloat(0)-min)*entropyAccuracy/interval);
+						int joY = (int) ((temp.getValueFloat(1)-min)*entropyAccuracy/interval);
+						int joZ = (int) ((temp.getValueFloat(2)-min)*entropyAccuracy/interval);
+						counter [joX][0]++;
+						counter [joY][1]++;
+						counter [joZ][2]++;
+				}
+				float entroX = 0, entroY = 0, entroZ = 0;
+				for (int i = 0; i < entropyAccuracy; i++ ){
+					entroX += (counter[i][0]/count)*Math.log10(counter[i][0]/count);
+					entroY += (counter[i][1]/count)*Math.log10(counter[i][1]/count);
+					entroZ += (counter[i][2]/count)*Math.log10(counter[i][2]/count);
+				}
+				
+				float changeRateX = 0, changeRateY = 0, changeRateZ = 0;
+			
+				for (int i = 0; i< data.size(); i++){
+					changeRateX += (data.get(i+1).getValueFloat(0) - data.get(i).getValueFloat(0))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
+					changeRateY += (data.get(i+1).getValueFloat(1) - data.get(i).getValueFloat(1))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
+					changeRateZ += (data.get(i+1).getValueFloat(2) - data.get(i).getValueFloat(2))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
+				}
+				changeRateX /= data.size();
+				changeRateY /= data.size();
+				changeRateZ /= data.size();
+				
+				
+				
+				final SharedPreferences settings = context.getSharedPreferences(NervousStatics.SENSOR_PREFS, 0);
+				
+				float freq = (int)context.getSharedPreferences(NervousStatics.SENSOR_FREQ, 0).getInt(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_freqValue", 30) * 1000;
+				boolean isLo = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doMeasure", true);
+				boolean isSh = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doShare", true);
+				
+				
+				dataReady(System.currentTimeMillis(), entroX, entroY, entroZ, freq, changeRateX, changeRateY, changeRateZ, isLo, isSh);
 			}
-			float entroX = 0, entroY = 0, entroZ = 0;
-			for (int i = 0; i < entropyAccuracy; i++ ){
-				entroX += (counter[i][0]/count)*Math.log10(counter[i][0]/count);
-				entroY += (counter[i][1]/count)*Math.log10(counter[i][1]/count);
-				entroZ += (counter[i][2]/count)*Math.log10(counter[i][2]/count);
-			}
 			
-			float changeRateX = 0, changeRateY = 0, changeRateZ = 0;
-		
-			for (int i = 0; i< data.size(); i++){
-				changeRateX += (data.get(i+1).getValueFloat(0) - data.get(i).getValueFloat(0))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
-				changeRateY += (data.get(i+1).getValueFloat(1) - data.get(i).getValueFloat(1))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
-				changeRateZ += (data.get(i+1).getValueFloat(2) - data.get(i).getValueFloat(2))/(data.get(i+1).getRecordTime()-data.get(i).getRecordTime());
-			}
-			changeRateX /= data.size();
-			changeRateY /= data.size();
-			changeRateZ /= data.size();
-			
-			
-			
-			final SharedPreferences settings = context.getSharedPreferences(NervousStatics.SENSOR_PREFS, 0);
-			
-			float freq = (int)context.getSharedPreferences(NervousStatics.SENSOR_FREQ, 0).getInt(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_freqValue", 30) * 1000;
-			boolean isLo = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doMeasure", true);
-			boolean isSh = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doShare", true);
-			
-			
-			dataReady(System.currentTimeMillis(), entroX, entroY, entroZ, freq, changeRateX, changeRateY, changeRateZ, isLo, isSh);
+			else{
+
+				final SharedPreferences settings = context.getSharedPreferences(NervousStatics.SENSOR_PREFS, 0);
+				
+				float freq = (int)context.getSharedPreferences(NervousStatics.SENSOR_FREQ, 0).getInt(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_freqValue", 30) * 1000;
+				boolean isLo = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doMeasure", true);
+				boolean isSh = settings.getBoolean(Long.toHexString(SensorDescInformation.targetSENSOR_ID) + "_doShare", true);
+				dataReady(System.currentTimeMillis(), 0, 0, 0, freq, 0, 0, 0, isLo, isSh);
+			};
 			return null;
 		}
-
 	}
+
+	
 
 	public void start() {
 		new InformationTask().execute();

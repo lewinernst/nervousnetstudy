@@ -42,16 +42,18 @@ public class BackendImplementation implements Backend {
 		
 		
 		int entropyAccuracy = SensorDescInformation.entropyAccuracy;
-		SensorQueriesAccelerometer accQuery = new SensorQueriesAccelerometer(SensorDescInformation.earliest, SensorDescInformation.latest, null);
-		SensorQueriesBattery batQuery = new SensorQueriesBattery(SensorDescInformation.earliest, SensorDescInformation.latest, null);
-		Log.d("lewin", "nowthis" + Float.toString(batQuery.getCount()));
-		int count = accQuery.getCount();
-		float min = accQuery.getMinValue().getAccX();
-		float max = accQuery.getMaxValue().getAccX();
-		float interval = max-min;
-		List<SensorData> data = accQuery.list;
-		int [][] counter = new int [entropyAccuracy][3];
-		for (SensorData temp : data) {
+		SensorQueriesAccelerometer accQuery = new SensorQueriesAccelerometer(SensorDescInformation.earliest, SensorDescInformation.latest, filesDir);
+		SensorQueriesBattery batQuery = new SensorQueriesBattery(SensorDescInformation.earliest, SensorDescInformation.latest, filesDir);
+		System.out.println(batQuery.containsReadings());
+		
+		if (accQuery.containsReadings()){
+			int count = accQuery.getCount();
+			float min = accQuery.getMinValue().getAccX();
+			float max = accQuery.getMaxValue().getAccX();
+			float interval = max-min;
+			List<SensorData> data = accQuery.list;
+			int [][] counter = new int [entropyAccuracy][3];
+			for (SensorData temp : data) {
 				
 				int joX = (int) ((temp.getValueFloat(0)-min)*entropyAccuracy/interval);
 				int joY = (int) ((temp.getValueFloat(1)-min)*entropyAccuracy/interval);
@@ -59,18 +61,21 @@ public class BackendImplementation implements Backend {
 				counter [joX][0]++;
 				counter [joY][1]++;
 				counter [joZ][2]++;
-		}
-		float entroX = 0, entroY = 0, entroZ = 0;
-		for (int i = 0; i < entropyAccuracy; i++ ){
-			entroX += (counter[i][0]/count)*Math.log10(counter[i][0]/count);
-			entroY += (counter[i][1]/count)*Math.log10(counter[i][1]/count);
-			entroZ += (counter[i][2]/count)*Math.log10(counter[i][2]/count);
+			}
+			float entroX = 0, entroY = 0, entroZ = 0;
+			for (int i = 0; i < entropyAccuracy; i++ ){
+				entroX += (counter[i][0]/count)*Math.log10(counter[i][0]/count);
+				entroY += (counter[i][1]/count)*Math.log10(counter[i][1]/count);
+				entroZ += (counter[i][2]/count)*Math.log10(counter[i][2]/count);
+			}
+		
+			String entroppy = Float.toString(entroX);
+			Log.d("lewin", entroppy);
+
+			this.display.displayEntropy(entroppy);	
 		}
 		
-		String entroppy = Float.toString(entroX);
-		Log.d("lewin", entroppy);
-
-		this.display.displayEntropy(entroppy);		
+		else this.display.displayEntropy("no values");
 	}
 
 	@Override
