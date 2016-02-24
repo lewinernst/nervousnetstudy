@@ -1,6 +1,0 @@
-package com.example.lewin;
-
-public enum DateType {
-	START_DATE,
-	END_DATE
-}

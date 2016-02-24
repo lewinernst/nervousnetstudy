@@ -1,9 +1,0 @@
-package com.example.lewin.graphics;
-
-public class Record {
-	public String time;
-	public String entropy;
-	public String frequency;
-	public String log;
-	public String share;
-}

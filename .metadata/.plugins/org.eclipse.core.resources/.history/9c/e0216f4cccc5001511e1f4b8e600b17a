@@ -1,9 +1,0 @@
-package ch.ethz.soms.nervous.info.graphics;
-
-public enum ListType {
-	TIME,
-	ENTROPY,
-	FREQUENCY,
-	LOG,
-	SHARE
-}
